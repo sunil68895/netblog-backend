@@ -1,13 +1,14 @@
 const express = require("express");
 const app = express();
+const env=require('dotenv')
 const mongoose = require("mongoose");
 const { MONGOURL } = require("./keys");
 const PORT = 5000;
-
+env.config();
 require("./models/user");
 require("./models/post");
 
-mongoose.connect(MONGOURL, {
+mongoose.connect(process.env.MONGOURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

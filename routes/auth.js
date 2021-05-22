@@ -6,14 +6,12 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
-const { SENDGRID_KEY } = require("../keys");
-const { JWT_SECRET } = require("../keys");
 const requiresignin = require("../middleware/requiresignin");
 
 const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: SENDGRID_KEY,
+      api_key: process.env.SENDGRID_KEY,
     },
   })
 );
@@ -81,7 +79,7 @@ router.post("/signin", (req, res) => {
             following,
             profilePicture,
           } = savedUser;
-          const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+          const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
           res.status(200).json({
             token,
             user: { _id, name, email, followers, following, profilePicture },
